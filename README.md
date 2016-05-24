@@ -63,7 +63,7 @@ Definitions in the `given` part of a test may override definitions defined in th
   * `execute` - _Object_ - executes a query
     * `operationName` - _String_ (optional) - the name of an operation to execute (in case query contains more than one)
     * `variables` - _Object_ (optional) - variables for query execution
-    * `validate-query` - _Boolean_ (optional) - disables query validation during the execution
+    * `validate-query` - _Boolean_ (optional) - `true` if query should be validated during the execution, `false` otherwise (`true` by default) 
     * `test-value` - _String_ (optional) - the name of a field defined in the `test-data`. This value would be passed as a root value to an executor.  
     
 #### Assertions
