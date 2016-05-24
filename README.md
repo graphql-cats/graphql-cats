@@ -73,3 +73,8 @@ Definitions in the `given` part of a test may override definitions defined in th
   * `loc` - _Array of Objects_ | _Array of Arrays of Numbers_ (optional) - a list of error locations
     * `line` - _Number_ 
     * `column` - _Number_ 
+* **Error regex match**
+  * `error-regex` - _String_ - execution/validation results contain provided error message (uses provided regular expressions to match an error message)  
+  * `loc` - _Array of Objects_ | _Array of Arrays of Numbers_ (optional) - a list of error locations
+    * `line` - _Number_ 
+    * `column` - _Number_ 
