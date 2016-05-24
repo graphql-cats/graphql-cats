@@ -23,6 +23,7 @@ join this effort and be part of the project, please let us know.
 There is still a number of open questions that we need to figure out together:
 
 * [File format and structure](https://github.com/graphql-cats/graphql-cats/issues/3)
+* [Error message assertions](https://github.com/graphql-cats/graphql-cats/issues/5)
 * [Versioning & Distribution](https://github.com/graphql-cats/graphql-cats/issues/4)
 * [Licence & Contributor Code of Conduct](https://github.com/graphql-cats/graphql-cats/issues/2)
 
