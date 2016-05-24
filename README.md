@@ -1,0 +1,1 @@
+## GraphQL Compatibility Acceptance Tests
