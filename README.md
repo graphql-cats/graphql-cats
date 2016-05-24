@@ -2,6 +2,36 @@
 
 [![Join the chat at https://gitter.im/graphql-cats/graphql-cats](https://badges.gitter.im/graphql-cats/graphql-cats.svg)](https://gitter.im/graphql-cats/graphql-cats?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+The aim of this project is to provide a set of compatibility acceptance tests for libraries 
+that implement [GraphQL specification](https://github.com/facebook/graphql). Since GraphQL 
+server implementations are written in different programming languages, this project defines test cases in a 
+language independent format ([YAML](http://yaml.org)).
+
+Using this test suite has following advantages:
+
+* The users and the author of a GraphQL library will get a better feeling whether library is compliant to the GraphQL 
+  specification and if not, which parts of the library are not compliant.
+* It reduces amount of work a library implementor needs to do
+* This makes it much easier for existing implementations to keep up with the specification changes 
+
+### Contribution & Open Questions
+
+At the moment this project finds itself in an infant phase. Any contributions are very welcome! Please join us in 
+a [gitter chat](https://gitter.im/graphql-cats/graphql-cats). If you would like to 
+join this effort and be part of the project, please let us know.
+
+There is still a number of open questions that we need to figure out together:
+
+* [File format and structure](https://github.com/graphql-cats/graphql-cats/issues/3)
+* [Versioning & Distribution](https://github.com/graphql-cats/graphql-cats/issues/4)
+* [Licence & Contributor Code of Conduct](https://github.com/graphql-cats/graphql-cats/issues/2)
+
+### Repository format
+
+`scenarios` folder contains a set of `*.yaml` and `*.graphql` files. Every subfolder represents a particular part of GraphQL specification. 
+`*.yaml` files contain scenarios with a list of test cases. `*.graphql` files contain IDL schema definitions that are used in some of the 
+scenarios (they are explicitly referenced). 
+
 ### Scenario File Format
 
 Every scenario is a [YAML](http://yaml.org) file with following structure: 
