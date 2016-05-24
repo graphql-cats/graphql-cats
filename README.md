@@ -41,13 +41,15 @@ Every scenario is a [YAML](http://yaml.org) file with following structure:
   * `schema` - _String_ (optional) - inline GraphQL IDL schema definition
   * `schema-file` - _String_ (optional) - IDL schema definition file path relative to the scenario file 
   * `test-data` - _Object_ (optional) - test data used for query execution and directives 
+  * `test-data-file` - _String_ (optional) - test data file path relative to the scenario file. File can be in either JSON or YAML format.   
 * `tests` - _Array of Objects_ - list of tests
   * `name` - _String_ - a name of the test
   * `given` - _Object_ - input information for the test
     * `query` - _String_ - the GraphQL query to execute an action against
     * `schema` - _String_ (optional) - inline GraphQL IDL schema definition
     * `schema-file` - _String_ (optional) - IDL schema definition file path relative to the scenario file
-    * `test-data` - _Object_ (optional) - test data used for query execution and directives     
+    * `test-data` - _Object_ (optional) - test data used for query execution and directives
+    * `test-data-file` - _String_ (optional) - test data file path relative to the scenario file. File can be in either JSON or YAML format.
   * `when` - _Object_ - action that should be performed in the test. See the **Actions** section for a list of available actions.
   * `then` - _Object_ | _Arrays of Objects_ - assertions that verify result of an action. See the **Assertions** section for a list of available actions.
 
