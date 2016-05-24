@@ -70,6 +70,8 @@ Definitions in the `given` part of a test may override definitions defined in th
 
 * **Validation passes**
   * `passes` - _Any_ - verifies that validation was successful. Only applicable in conjunction with query validation action  
+* **Data match**
+  * `data` - _Object_ - compares the `data` object with the result of a query execution. Only applicable in conjunction with query execution action   
 * **Error count**
   * `error-count` - _Number_ - number of the errors in execution/validation results  
 * **Error contains match**
