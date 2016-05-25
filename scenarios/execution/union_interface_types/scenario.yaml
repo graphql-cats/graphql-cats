@@ -1,0 +1,6 @@
+scenario: "Execute: Union and intersection types"
+background:
+  schema: schema.yaml
+  test-data-file: data.yaml
+tests:
+  path: tests/*.yaml

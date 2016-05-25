@@ -1,0 +1,24 @@
+interface Named {
+  name: String
+}
+
+type Dog implements Named {
+  name: String
+  barks: Boolean
+}
+
+type Cat implements Named {
+  name: String
+  meows: Boolean
+}
+
+union Pet = Dog | Cat
+
+type Person implements Named {
+  pets: [Pet]
+  friends: [Named]
+}
+
+schema {
+  query: Person
+}

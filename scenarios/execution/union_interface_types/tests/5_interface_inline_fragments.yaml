@@ -1,0 +1,30 @@
+name: executes interface types with inline fragments
+given:
+  query: |
+    {
+      __typename
+      name
+      friends {
+        __typename
+        name
+        ... on Dog {
+          barks
+        }
+        ... on Cat {
+          meows
+        }
+      }
+    }
+when:
+  execute:
+    test-value: bob
+then:
+  data:
+    __typename: "Person"
+    name: "Bob"
+    friends:
+      - __typename: "Person"
+        name: "Liz"
+      - __typename: "Dog"
+        name: "Odie"
+        barks: true
