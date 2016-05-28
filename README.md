@@ -67,7 +67,7 @@ Definitions in the `given` part of a test may override definitions defined in th
     * `operation-name` - _String_ (optional) - the name of an operation to execute (in case query contains more than one)
     * `variables` - _Object_ (optional) - variables for query execution
     * `validate-query` - _Boolean_ (optional) - `true` if query should be validated during the execution, `false` otherwise (`true` by default) 
-    * `test-value` - _String_ (optional) - the name of a field defined in the `test-data`. This value would be passed as a root value to an executor.  
+    * `test-value` - _String_ (optional) - the name of a field defined in the `test-data`. This value should be passed as a root value to an executor.  
     
 #### Assertions
 
@@ -89,3 +89,157 @@ Definitions in the `given` part of a test may override definitions defined in th
   * `loc` - _Array of Objects_ | _Array of Arrays of Numbers_ (optional) - a list of error locations
     * `line` - _Number_ 
     * `column` - _Number_ 
+* **Execution exception contains match**
+  * `exception` - _String_ - execution may throw an exception during the execution (for instance, if operation name is not provided, but query contains more than one named operation). 
+    This assertion verifies the message of this exception (provided error message may contain only part of the actual message). 
+    Only applicable in conjunction with query execution action    
+* **Execution exception regex match**
+  * `error-regex` - _String_ - execution may throw an exception during the execution (for instance, if operation name is not provided, but query contains more than one named operation). 
+    This assertion verifies the message of this exception (uses provided regular expressions to match an error message). 
+    Only applicable in conjunction with query execution action  
+
+### Execution Semantics
+
+All test cases and scenarios are self-contained. This means that they contain the schema definition, query and test data for an execution.
+Schema definition expected to be materialized in executable form. By default, fields' `resolve` function must return the values provided 
+with the `test-data`/`test-data-file` and `test-value` properties which are defined in a scenario file. Some fields may have special behaviour
+which is defined via schema directives which you can find in the next section.
+ 
+### Schema Directives
+
+#### @resolveString
+
+```graphql
+directive @resolveString(value: String!) on FIELD_DEFINITION
+```
+
+Resolves `String` field with provided `value`. Value may contain a placeholders which refer to the field arguments and must be replaced during the field resolution.
+  
+**Example:**
+
+for given schema definition:
+
+```graphql
+type Query {
+  article(title: String): String @resolveString(value: "Test article with title '$title'")
+}
+
+schema {
+  query: Query
+}
+```
+
+and query:
+
+```graphql
+{
+  article(title: Foo)    
+}
+```
+
+result of an execution should produce following JSON:
+
+```json
+{
+  "data": {
+    "article": "Test article with title 'Foo'"
+  }
+}
+```
+
+#### @argumentsJson
+
+```graphql
+directive @argumentsJson on FIELD_DEFINITION
+```
+
+Resolves `String` field with compact JSON representation of all field arguments.
+
+#### @resolvePromiseString
+
+```graphql
+directive @resolvePromiseString(value: String!) on FIELD_DEFINITION
+```
+
+Resolves `String` field with provided `value` which may contain argument placeholders. Internally field should be resolved with successful 
+promise or an equivalent of promise. Ideally short delay should be applied before actual resolution. If implementation does not support
+promises, then it may return an eager value.
+
+#### @resolveEmptyObject
+
+```graphql
+directive @resolveEmptyObject on FIELD_DEFINITION
+```
+
+Resolves `ObjectType` field with an empty object.
+
+#### @resolveTestData
+
+```graphql
+directive @resolveTestData(name: String!) on FIELD_DEFINITION
+```
+
+Resolves field with a value provided via `test-data` property.
+
+#### @resolvePromiseTestData
+
+```graphql
+directive @resolvePromiseTestData(name: String!) on FIELD_DEFINITION
+```
+
+Resolves field with a value provided via `test-data` property. Internally field should be resolved with successful 
+promise or an equivalent of promise. Ideally short delay should be applied before actual resolution. If implementation does not support
+promises, then it may return an eager value.
+
+#### @resolvePromise
+
+```graphql
+directive @resolvePromise on FIELD_DEFINITION
+```
+
+Resolves field with context value (as in the default case). Internally field should be resolved with successful 
+promise or an equivalent of promise. Ideally short delay should be applied before actual resolution. If implementation does not support
+promises, then it may return an eager value.
+
+#### @resolveError
+
+```graphql
+directive @resolveError(message: String!) on FIELD_DEFINITION
+```
+
+Field resolution fails with provided error `message`.
+
+#### @resolveErrorList
+
+```graphql
+directive @resolveErrorList(values: [String!]!, message: [String!]!) on FIELD_DEFINITION
+```
+
+Field of type `[String]` fails with provided errors `messages`. Even though field resolution fails, it still must produce a value which contains 
+provided `values`.
+
+#### @resolvePromiseReject
+
+```graphql
+directive @resolvePromiseReject(message: String!) on FIELD_DEFINITION
+```
+
+Field resolution fails with provided error `message`. Internally field should be resolved with rejected 
+promise or an equivalent of promise. Ideally short delay should be applied before actual resolution. If implementation does not support
+promises, then it may return an eager error.
+
+#### @resolvePromiseReject
+
+```graphql
+directive @resolvePromiseRejectList(values: [String!]!, message: [String!]!) on FIELD_DEFINITION
+```
+
+Field of type `[String]` fails with provided errors `messages`. Even though field resolution fails, it still must produce a value which contains 
+provided `values`. Internally field should be resolved with rejected 
+promise or an equivalent of promise. Ideally short delay should be applied before actual resolution. If implementation does not support
+promises, then it may return an eager error.
+
+### Test Data
+
+Test data is a JSON/YAML object where every top-level field may be referenced by name within a scenario (with `test-value` property), 
+schema directive (`@resolveTestData`, `@resolvePromiseTestData`) or test data itself (with `{"$ref": "name"}` value).
