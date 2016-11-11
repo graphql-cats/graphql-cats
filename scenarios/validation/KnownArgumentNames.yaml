@@ -1,0 +1,38 @@
+scenario:  "Validate: Known argument names"
+background:
+  schema-file: validation.schema.graphql
+tests:
+  - name: known argument
+    given:
+      query: |
+        query KnownArgument {
+          dog { name(surname: true) }
+        }
+    when:
+      validate: [KnownArgumentNames]
+    then:
+      passes:
+  - name: unknown argument on field
+    given:
+      query: |
+        query UnknownArgument {
+          dog { name(sur: true) }
+        }
+    when:
+      validate: [KnownArgumentNames]
+    then:
+      - error-count: 1
+      - error: "Unknown argument 'sur' on field 'name' of type 'String'."
+        loc: {line: 2, column: 14}
+  - name: unknown argument on directive
+    given:
+      query: |
+        query UnknownArgument($a:Boolean!, $b:Int) {
+          dog { name @include(if: $a, else: $b) }
+        }
+    when:
+      validate: [KnownArgumentNames]
+    then:
+      - error-count: 1
+      - error: "Unknown argument 'else' on directive '@include'."
+        loc: {line: 2, column: 31}
