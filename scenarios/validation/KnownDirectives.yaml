@@ -1,4 +1,4 @@
-scenario:  "Validate: Known argument names"
+scenario:  "Validate: Known directives"
 background:
   schema-file: validation.schema.graphql
 tests:
