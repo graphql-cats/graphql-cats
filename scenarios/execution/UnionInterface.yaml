@@ -18,6 +18,7 @@ background:
     union Pet = Dog | Cat
     
     type Person implements Named {
+      name: String
       pets: [Pet]
       friends: [Named]
     }
