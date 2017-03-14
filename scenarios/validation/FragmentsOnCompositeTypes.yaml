@@ -1,0 +1,46 @@
+scenario:  "Validate: Fragments on composite types"
+background:
+  schema-file: validation.schema.graphql
+tests:
+  - name: valid inline fragment
+    given:
+      query: |
+        {
+          pet {
+            name
+            ... on Dog { barks }
+            ... on Cat { meows }
+          }
+        }
+    when:
+      validate: [FragmentsOnCompositeTypes]
+    then:
+      passes:
+  - name: invalid inline fragment
+    given:
+      query: |
+        {
+          pet {
+            name
+            ... on String { barks }
+          }
+        }
+    when:
+      validate: [FragmentsOnCompositeTypes]
+    then:
+      - error-count: 1
+      - error: "Fragment cannot condition on non composite type 'String'."
+        loc: {line: 4, column: 5}
+  - name: invalid fragment definition
+    given:
+      query: |
+        { dog { ...fragFields }}
+        fragment fragFields on FurColor {
+          name
+        }
+    when:
+      validate: [FragmentsOnCompositeTypes]
+    then:
+      - error-count: 1
+      - error: "Fragment 'fragFields' cannot condition on non composite type 'FurColor'."
+        loc: {line: 2, column: 1}

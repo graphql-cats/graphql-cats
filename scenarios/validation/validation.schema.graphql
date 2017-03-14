@@ -24,13 +24,16 @@ enum FurColor {
 }
 
 type Dog implements Being, Pet, Canine {
+  id: ID
   name(surname: Boolean): String
+  owner: Human
   nickname: String
   barks: Boolean
   barkVolume: Int
   doesKnowCommand(dogCommand: DogCommand): Boolean
   isHousetrained(atOtherHomes: Boolean = true): Boolean
   isAtLocation(x: Int, y: Int): Boolean
+  aliases: [String]
 }
 
 type Cat implements Being, Pet {
@@ -85,6 +88,8 @@ type ComplicatedArgs {
   multipleReqs(req1: Int!, req2: Int!): String
   multipleOpts(opt1: Int, opt2: Int): String
   multipleOptAndReq(req1: Int!, req2: Int!, opt1: Int, opt2: Int): String
+  unionField(unionArg: DogOrHuman): String
+  interfaceField(interfaceArg: Human): String
 }
 
 type QueryRoot {
@@ -118,6 +123,11 @@ directive @onEnumValue on ENUM_VALUE
 directive @onInputObject on INPUT_OBJECT
 directive @onInputFieldDefinition on INPUT_FIELD_DEFINITION
 
+type MutationRoot {
+  createDog(name: String!): Dog
+}
+
 schema {
   query: QueryRoot
+  mutation: MutationRoot
 }
