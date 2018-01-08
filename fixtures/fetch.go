@@ -25,36 +25,37 @@ func main() {
 	var vehicles Vehicles
 
 	// could make this parallel but feels a little douchy to hammer
-	// their API.
+	// their API. Could probably clean this up some too
 	entities := []struct {
-		url      string
-		filename string
+		basename string
 		data     Appendable
 		result   Resultable
 	}{
-		{root["films"], "films.gob", &films, &FilmResult{}},
-		{root["people"], "people.gob", &people, &PersonResult{}},
-		{root["planets"], "planets.gob", &planets, &PlanetResult{}},
-		{root["species"], "species.gob", &species, &SpeciesResult{}},
-		{root["starships"], "starships.gob", &starships, &StarshipResult{}},
-		{root["vehicles"], "vehicles.gob", &vehicles, &VehicleResult{}},
+		{"films", &films, &FilmResult{}},
+		{"people", &people, &PersonResult{}},
+		{"planets", &planets, &PlanetResult{}},
+		{"species", &species, &SpeciesResult{}},
+		{"starships", &starships, &StarshipResult{}},
+		{"vehicles", &vehicles, &VehicleResult{}},
 	}
 
 	for _, v := range entities {
-		err = fetch(client, v.url, v.filename, v.data, v.result)
+		filename := v.basename + ".gob"
+		err = fetch(client, root[v.basename], filename, v.data, v.result)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
 	}
 
-	var swJson = make(map[string]Appendable)
-	swJson["films"] = &films
-	swJson["people"] = &people
-	swJson["planets"] = &planets
-	swJson["species"] = &species
-	swJson["starships"] = &starships
-	swJson["vehicles"] = &vehicles
+	var swJson = map[string]Appendable{
+		"films":     &films,
+		"people":    &people,
+		"planets":   &planets,
+		"species":   &species,
+		"starships": &starships,
+		"vehicles":  &vehicles,
+	}
 
 	f, err := os.Create("swapi.json")
 	if err != nil {
