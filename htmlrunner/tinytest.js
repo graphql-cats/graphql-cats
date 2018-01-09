@@ -40,8 +40,9 @@
  */
 var TinyTest = {
 
-    logger: function(logger) {
+    logger: function(logger, style) {
       var pre = document.createElement("pre");
+      pre.className = style;
 
       // script tag exists prior to the body.
       document.addEventListener("DOMContentLoaded", function(e) {
@@ -57,8 +58,9 @@ var TinyTest = {
     },
 
     run: function(tests) {
-        var error = logger(console.error);
-        var info = logger(console.log);
+        document.write('<style>.fail {background-color:#ff9999;} .pass {background-color:#99ff99;}</style>');
+        var error = logger(console.error, 'fail');
+        var info = logger(console.log, 'pass');
         var failures = 0;
         for (var testName in tests) {
             var testAction = tests[testName];
@@ -71,11 +73,6 @@ var TinyTest = {
                 error(e.stack);
             }
         }
-        setTimeout(function() { // Give document a chance to complete
-            if (window.document && document.body) {
-                document.body.style.backgroundColor = (failures == 0 ? '#99ff99' : '#ff9999');
-            }
-        }, 0);
     },
 
     fail: function(msg) {
