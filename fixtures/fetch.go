@@ -7,7 +7,26 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 )
+
+type Universe struct {
+	Films     Films
+	People    People
+	Planets   Planets
+	Species   Species
+	Starships Starships
+	Vehicles  Vehicles
+}
+
+type JsonUniverse struct {
+	Films     map[string]Film
+	People    map[string]Person
+	Planets   map[string]Planet
+	Species   map[string]Specie
+	Starships map[string]Starship
+	Vehicles  map[string]Vehicle
+}
 
 func main() {
 	client := &http.Client{}
@@ -17,12 +36,7 @@ func main() {
 		return
 	}
 
-	var films Films
-	var people People
-	var planets Planets
-	var species Species
-	var starships Starships
-	var vehicles Vehicles
+	var universe Universe
 
 	// could make this parallel but feels a little douchy to hammer
 	// their API. Could probably clean this up some too
@@ -31,12 +45,12 @@ func main() {
 		data     Appendable
 		result   Resultable
 	}{
-		{"films", &films, &FilmResult{}},
-		{"people", &people, &PersonResult{}},
-		{"planets", &planets, &PlanetResult{}},
-		{"species", &species, &SpeciesResult{}},
-		{"starships", &starships, &StarshipResult{}},
-		{"vehicles", &vehicles, &VehicleResult{}},
+		{"films", &universe.Films, &FilmResult{}},
+		{"people", &universe.People, &PersonResult{}},
+		{"planets", &universe.Planets, &PlanetResult{}},
+		{"species", &universe.Species, &SpeciesResult{}},
+		{"starships", &universe.Starships, &StarshipResult{}},
+		{"vehicles", &universe.Vehicles, &VehicleResult{}},
 	}
 
 	for _, v := range entities {
@@ -48,15 +62,6 @@ func main() {
 		}
 	}
 
-	var swJson = map[string]Appendable{
-		"films":     &films,
-		"people":    &people,
-		"planets":   &planets,
-		"species":   &species,
-		"starships": &starships,
-		"vehicles":  &vehicles,
-	}
-
 	f, err := os.Create("swapi.json")
 	if err != nil {
 		fmt.Println(err)
@@ -64,12 +69,74 @@ func main() {
 	}
 	defer f.Close()
 
+	m := s2m(&universe)
+
 	enc := json.NewEncoder(f)
 	enc.SetIndent("", "  ")
-	if err = enc.Encode(swJson); err != nil {
+	if err = enc.Encode(&m); err != nil {
 		fmt.Println(err)
 		return
 	}
+}
+
+func s2m(u *Universe) *JsonUniverse {
+	var ju JsonUniverse
+	// should probably handle dup keys but can't be faffed
+	ju.Films = make(map[string]Film)
+	for _, v := range u.Films {
+		id := string(v.Url)
+		v.Id = id
+		v.Url = "" // drop the URL in the JSON
+		ju.Films[id] = v
+	}
+
+	ju.People = make(map[string]Person)
+	for _, v := range u.People {
+		id := string(v.Url)
+		v.Id = id
+		v.Url = ""
+		ju.People[id] = v
+	}
+
+	ju.Planets = make(map[string]Planet)
+	for _, v := range u.Planets {
+		id := string(v.Url)
+		v.Id = id
+		v.Url = ""
+		ju.Planets[id] = v
+	}
+
+	ju.Species = make(map[string]Specie)
+	for _, v := range u.Species {
+		id := string(v.Url)
+		v.Id = id
+		v.Url = ""
+		ju.Species[id] = v
+	}
+
+	ju.Starships = make(map[string]Starship)
+	for _, v := range u.Starships {
+		id := string(v.Url)
+		v.Id = id
+		v.Url = ""
+		ju.Starships[id] = v
+	}
+
+	ju.Vehicles = make(map[string]Vehicle)
+	for _, v := range u.Vehicles {
+		id := string(v.Url)
+		v.Id = id
+		v.Url = ""
+		ju.Vehicles[id] = v
+	}
+
+	return &ju
+}
+
+func url2id(url string) string {
+	last := len(url) - 1
+	pos := strings.LastIndex(url[:last], "/")
+	return url[pos+1 : last]
 }
 
 func open(filename string) (*os.File, error) {
@@ -204,11 +271,43 @@ func (f *Vehicles) Len() int {
 }
 
 // Entities
+type Ids []string
+
+func (fi *Ids) UnmarshalJSON(b []byte) error {
+	var urls []string
+	err := json.Unmarshal(b, &urls)
+	if err != nil {
+		return err
+	}
+
+	for i, v := range urls {
+		urls[i] = url2id(v)
+	}
+
+	*fi = urls
+
+	return nil
+}
+
+type Url string
+
+func (ptr *Url) UnmarshalJSON(b []byte) error {
+	var u string
+	err := json.Unmarshal(b, &u)
+	if err != nil {
+		return err
+	}
+
+	*ptr = Url(url2id(u))
+
+	return nil
+}
 
 type RestFields struct {
+	Id      string
 	Created string
 	Edited  string
-	Url     string
+	Url     Url `json:",omitempty"`
 }
 
 type Person struct {
@@ -220,10 +319,10 @@ type Person struct {
 	BirthYear string `json:"birth_year"`
 	Gender    string
 	Homeworld string
-	Films     []string
-	Species   []string
-	Vehicles  []string
-	Starships []string
+	Films     Ids
+	Species   Ids
+	Vehicles  Ids
+	Starships Ids
 	RestFields
 }
 
@@ -237,8 +336,8 @@ type Planet struct {
 	Climate        string
 	Terrain        string
 	SurfaceWater   string `json:"surface_water"`
-	Residents      []string
-	Films          []string
+	Residents      Ids
+	Films          Ids
 	RestFields
 }
 
@@ -249,11 +348,11 @@ type Film struct {
 	Director     string
 	Producer     string
 	ReleaseDate  string `json:"release_date"`
-	Species      []string
-	Starships    []string
-	Vehicles     []string
-	Characters   []string
-	Planets      []string
+	Species      Ids
+	Starships    Ids
+	Vehicles     Ids
+	Characters   Ids
+	Planets      Ids
 	RestFields
 }
 
@@ -268,8 +367,8 @@ type Specie struct {
 	SkinColors      string `json:"skin_colors"`
 	Language        string
 	Homeworld       string
-	People          []string
-	Films           []string
+	People          Ids
+	Films           Ids
 	RestFields
 }
 
@@ -278,14 +377,16 @@ type Transport struct {
 	Consumables          string
 	CostInCredits        string `json:"cost_in_credits"`
 	Crew                 string
-	Films                []string
+	Films                Ids
 	Length               string
 	Manufacturer         string
 	MaxAtmospheringSpeed string `json:"max_atmosphering_speed"`
 	Model                string
 	Name                 string
 	Passengers           string
-	Pilots               []string
+	Pilots               Ids
+
+	RestFields
 }
 
 type Starship struct {
@@ -294,16 +395,12 @@ type Starship struct {
 	Mglt             string
 	HyperdriveRating string `json:"hyperdrive_rating"`
 	StarshipClass    string `json:"starship_class"`
-
-	RestFields
 }
 
 type Vehicle struct {
 	Transport
 
 	VehicleClass string `json:"vehicle_class"`
-
-	RestFields
 }
 
 // API results
