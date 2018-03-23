@@ -243,6 +243,60 @@ promises, then it may return an eager error.
 Test data is a JSON/YAML object where every top-level field may be referenced by name within a scenario (with `test-value` property), 
 schema directive (`@resolveTestData`, `@resolvePromiseTestData`) or test data itself (with `{"$ref": "name"}` value).
 
+Let's look at small scenario example that takes advantage of the test data and references:
+
+```yaml
+scenario: "Execute: Handles basic execution tasks"
+tests:
+  - name: test scenario
+    given:
+      schema: |
+        type Basket {
+          name: String
+          content: [Fruit]
+        }
+
+        type Fruit {
+          name: String
+          inBasket: Basket
+        }
+
+        type Query {
+          apples: Basket @resolveTestData(name: "tasty")
+        }
+      test-data:
+        green-apple: {name: "Green Apple!", inBasket: {$ref: tasty}}
+        tasty:
+          name: Tasty fuits!
+          content: [{name: "Red Apple!", inBasket: {$ref: tasty}}, {$ref: green-apple}]
+      query: |
+        query {
+          apples {
+            content {
+              name
+              inBasket {
+                name
+              }
+            }
+          }
+        }
+    when:
+      execute:
+    then:
+      data:
+        apples:
+          content:
+          - name: Red Apple!
+            inBasket:
+              name: Tasty fuits!
+          - name: Green Apple!
+            inBasket:
+              name: Tasty fuits!
+```
+
+The test defines 2 data elements: "green-apple" and "tasty". These JSON objects are then referenced by name from the `@resolveTestData(name: "tasty")`
+directive and withing the test data itself. 
+
 ### Example Driver Implementation
 
 In order to use this test suite in your GraphQL library, you need to implement a small driver that reads scenario files and 
