@@ -242,3 +242,19 @@ promises, then it may return an eager error.
 
 Test data is a JSON/YAML object where every top-level field may be referenced by name within a scenario (with `test-value` property), 
 schema directive (`@resolveTestData`, `@resolvePromiseTestData`) or test data itself (with `{"$ref": "name"}` value).
+
+### Example Driver Implementation
+
+In order to use this test suite in your GraphQL library, you need to implement a small driver that reads scenario files and 
+executes the tests. An example driver can be found in Sangria (scala GraphQL implementation):
+
+[CatsSupport.scala](https://github.com/sangria-graphql/sangria/blob/master/src/test/scala/sangria/util/CatsSupport.scala)
+
+Main entry point that generates the tests can be found in the [`generateTests` function](https://github.com/sangria-graphql/sangria/blob/master/src/test/scala/sangria/util/CatsSupport.scala#L35-L73).
+
+In general, driver executes of following steps:
+  
+1. Load scenario data from the YAML file ([CatsScenarioData](https://github.com/sangria-graphql/sangria/blob/master/src/test/scala/sangria/util/CatsSupport.scala#L359))
+2. Generate an executable schema based on the SDL provided in the scenario ("given" part of the scenario) ([CatsScenarioExecutor](https://github.com/sangria-graphql/sangria/blob/master/src/test/scala/sangria/util/CatsSupport.scala#L79))
+3. Execute a test query against the generated schema ("when" part of the scenario) ([CatsScenarioExecutor.executeAction](https://github.com/sangria-graphql/sangria/blob/master/src/test/scala/sangria/util/CatsSupport.scala#L166))
+4. Assert results of the execution ("then" part of the scenario) ([CatsAssertions](https://github.com/sangria-graphql/sangria/blob/master/src/test/scala/sangria/util/CatsSupport.scala#L233))   
