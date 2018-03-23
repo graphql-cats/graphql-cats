@@ -29,7 +29,7 @@ There are still a number of open questions that we need to figure out together:
 ### Repository format
 
 `scenarios` folder contains a set of `*.yaml` and `*.graphql` files. Every subfolder represents a particular part of GraphQL specification. 
-`*.yaml` files contain scenarios with a list of test cases. `*.graphql` files contain IDL schema definitions that are used in some of the 
+`*.yaml` files contain scenarios with a list of test cases. `*.graphql` files contain SDL schema definitions that are used in some of the 
 scenarios (they are explicitly referenced). 
 
 ### Scenario File Format
@@ -38,16 +38,16 @@ Every scenario is a [YAML](http://yaml.org) file with following structure:
 
 * `scenario` - _String_ - the name of this scenario
 * `background` - _Object_ (optional) - common definitions used by all of the tests
-  * `schema` - _String_ (optional) - inline GraphQL IDL schema definition
-  * `schema-file` - _String_ (optional) - IDL schema definition file path relative to the scenario file 
+  * `schema` - _String_ (optional) - inline GraphQL SDL schema definition
+  * `schema-file` - _String_ (optional) - SDL schema definition file path relative to the scenario file 
   * `test-data` - _Object_ (optional) - test data used for query execution and directives 
   * `test-data-file` - _String_ (optional) - test data file path relative to the scenario file. File can be in either JSON or YAML format.   
 * `tests` - _Array of Objects_ - list of tests
   * `name` - _String_ - a name of the test
   * `given` - _Object_ - input information for the test
     * `query` - _String_ - the GraphQL query to execute an action against
-    * `schema` - _String_ (optional) - inline GraphQL IDL schema definition
-    * `schema-file` - _String_ (optional) - IDL schema definition file path relative to the scenario file
+    * `schema` - _String_ (optional) - inline GraphQL SDL schema definition
+    * `schema-file` - _String_ (optional) - SDL schema definition file path relative to the scenario file
     * `test-data` - _Object_ (optional) - test data used for query execution and directives
     * `test-data-file` - _String_ (optional) - test data file path relative to the scenario file. File can be in either JSON or YAML format.
   * `when` - _Object_ - action that should be performed in the test. See the **Actions** section for a list of available actions.
