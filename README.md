@@ -211,7 +211,7 @@ Field resolution fails with provided error `message`.
 #### @resolveErrorList
 
 ```graphql
-directive @resolveErrorList(values: [String!]!, message: [String!]!) on FIELD_DEFINITION
+directive @resolveErrorList(values: [String!]!, messages: [String!]!) on FIELD_DEFINITION
 ```
 
 Field of type `[String]` fails with provided errors `messages`. Even though field resolution fails, it still must produce a value which contains 
@@ -227,10 +227,10 @@ Field resolution fails with provided error `message`. Internally field should be
 promise or an equivalent of promise. Ideally short delay should be applied before actual resolution. If implementation does not support
 promises, then it may return an eager error.
 
-#### @resolvePromiseReject
+#### @resolvePromiseRejectList
 
 ```graphql
-directive @resolvePromiseRejectList(values: [String!]!, message: [String!]!) on FIELD_DEFINITION
+directive @resolvePromiseRejectList(values: [String!]!, messages: [String!]!) on FIELD_DEFINITION
 ```
 
 Field of type `[String]` fails with provided errors `messages`. Even though field resolution fails, it still must produce a value which contains 
