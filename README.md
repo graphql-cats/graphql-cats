@@ -252,7 +252,7 @@ executes the tests. An example driver can be found in Sangria (scala GraphQL imp
 
 Main entry point that generates the tests can be found in the [`generateTests` function](https://github.com/sangria-graphql/sangria/blob/master/src/test/scala/sangria/util/CatsSupport.scala#L35-L73).
 
-In general, driver executes of following steps:
+In general, driver executes following steps:
   
 1. Load scenario data from the YAML file ([CatsScenarioData](https://github.com/sangria-graphql/sangria/blob/master/src/test/scala/sangria/util/CatsSupport.scala#L359))
 2. Generate an executable schema based on the SDL provided in the scenario ("given" part of the scenario) ([CatsScenarioExecutor](https://github.com/sangria-graphql/sangria/blob/master/src/test/scala/sangria/util/CatsSupport.scala#L79))
