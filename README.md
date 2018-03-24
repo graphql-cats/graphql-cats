@@ -281,7 +281,7 @@ tests:
           }
         }
     when:
-      execute:
+      execute: true
     then:
       data:
         apples:

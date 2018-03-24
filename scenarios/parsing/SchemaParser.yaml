@@ -7,9 +7,9 @@ tests:
           world: String
         }
     when:
-      parse:
+      parse: true
     then:
-      passes:
+      passes: true
 
   - name: Simple extension
     given:
@@ -18,9 +18,9 @@ tests:
           world: String
         }
     when:
-      parse:
+      parse: true
     then:
-      passes:
+      passes: true
 
   - name: Simple non-null type
     given:
@@ -29,41 +29,41 @@ tests:
           world: String!
         }
     when:
-      parse:
+      parse: true
     then:
-      passes:
+      passes: true
 
   - name: Simple type inheriting interface
     given:
       query: type Hello implements World { }
     when:
-      parse:
+      parse: true
     then:
-      passes:
+      passes: true
 
   - name: Simple type inheriting multiple interfaces
     given:
       query: type Hello implements Wo, rld { }
     when:
-      parse:
+      parse: true
     then:
-      passes:
+      passes: true
 
   - name: Single value enum
     given:
       query: enum Hello { WORLD }
     when:
-      parse:
+      parse: true
     then:
-      passes:
+      passes: true
 
   - name: Double value enum
     given:
       query: enum Hello { WO, RLD }
     when:
-      parse:
+      parse: true
     then:
-      passes:
+      passes: true
 
   - name: Simple interface
     given:
@@ -72,9 +72,9 @@ tests:
           world: String
         }
     when:
-      parse:
+      parse: true
     then:
-      passes:
+      passes: true
 
   - name: Simple field with arg
     given:
@@ -83,9 +83,9 @@ tests:
           world(flag: Boolean): String
         }
     when:
-      parse:
+      parse: true
     then:
-      passes:
+      passes: true
 
   - name: Simple field with arg with default value
     given:
@@ -94,9 +94,9 @@ tests:
           world(flag: Boolean = true): String
         }
     when:
-      parse:
+      parse: true
     then:
-      passes:
+      passes: true
 
   - name: Simple field with list arg
     given:
@@ -105,9 +105,9 @@ tests:
           world(things: [String]): String
         }
     when:
-      parse:
+      parse: true
     then:
-      passes:
+      passes: true
 
   - name: Simple field with two args
     given:
@@ -116,33 +116,33 @@ tests:
           world(argOne: Boolean, argTwo: Int): String
         }
     when:
-      parse:
+      parse: true
     then:
-      passes:
+      passes: true
 
   - name: Simple union
     given:
       query: union Hello = World
     when:
-      parse:
+      parse: true
     then:
-      passes:
+      passes: true
 
   - name: Union with two types
     given:
       query: union Hello = Wo | Rld
     when:
-      parse:
+      parse: true
     then:
-      passes:
+      passes: true
 
   - name: Scalar
     given:
       query: scalar Hello
     when:
-      parse:
+      parse: true
     then:
-      passes:
+      passes: true
 
   - name: Simple input object
     given:
@@ -151,9 +151,9 @@ tests:
           world: String
         }
     when:
-      parse:
+      parse: true
     then:
-      passes:
+      passes: true
 
   - name: Simple input object with args should fail
     given:
@@ -162,6 +162,6 @@ tests:
           world(foo: Int): String
         }
     when:
-      parse:
+      parse: true
     then:
       syntax-error:

@@ -132,7 +132,7 @@ tests:
           deep { c, deeper: deep { c } }
         }
     when:
-      execute:
+      execute: true
     then:
       data:
         a: Apple
@@ -180,7 +180,7 @@ tests:
           asyncRejectListError
         }
     when:
-      execute:
+      execute: true
     then:
       - data:
           sync: sync
@@ -519,6 +519,6 @@ tests:
 
         type Query { foo: String }
     when:
-      execute:
+      execute: true
     then:
       exception: GraphQL cannot execute a request containing a ObjectTypeDefinition.
