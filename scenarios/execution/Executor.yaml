@@ -331,7 +331,7 @@ tests:
         operation-name: UnknownExample
         test-value: data
     then:
-      exception: Unknown operation named "UnknownExample"
+      exception: Unknown operation name 'UnknownExample'
 
   - name: uses the query schema for queries
     given:
@@ -521,4 +521,4 @@ tests:
     when:
       execute: true
     then:
-      exception: GraphQL cannot execute a request containing a ObjectTypeDefinition.
+      exception: The 'Query' definition is not executable.
