@@ -499,7 +499,7 @@ tests:
         }
       query: "{ field(a: true, c: false, e: 0) }"
     when:
-      execute:
+      execute: true
     then:
       data:
         field: '{"a":true,"c":false,"e":0}'

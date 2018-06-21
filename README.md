@@ -58,11 +58,11 @@ Definitions in the `given` part of a test may override definitions defined in th
 #### Actions
 
 * **Query parsing**
-  * `parse` - _Any_ - just parses the query 
+  * `parse` - _Boolean_ - just parses the query 
 * **Query validation**
   * `validate` - _Array of Strings_ - the list of validation rule names to validate a query against. This action will only validate query without executing it. 
 * **Query execution**
-  * `execute` - _Object_ - executes a query
+  * `execute` - _Boolean_ | _Object_ - executes a query
     * `operation-name` - _String_ (optional) - the name of an operation to execute (in case query contains more than one)
     * `variables` - _Object_ (optional) - variables for query execution
     * `validate-query` - _Boolean_ (optional) - `true` if query should be validated during the execution, `false` otherwise (`true` by default) 
@@ -71,9 +71,9 @@ Definitions in the `given` part of a test may override definitions defined in th
 #### Assertions
 
 * **Validation/Parsing is successful**
-  * `passes` - _Any_ - verifies that validation was successful. Only applicable in conjunction with query validation/parsing action  
+  * `passes` - _Boolean_ - verifies that validation was successful. Only applicable in conjunction with query validation/parsing action  
 * **Parsing syntax error**
-  * `syntax-error` - _Any_ -  query contains a syntax error. Only applicable in conjunction with query parsing action (No text matching takes place, it just verifies the fact that there is a syntax error)  
+  * `syntax-error` - _Boolean_ -  query contains a syntax error. Only applicable in conjunction with query parsing action (No text matching takes place, it just verifies the fact that there is a syntax error)  
 * **Data match**
   * `data` - _Object_ - compares the `data` object with the result of a query execution. Only applicable in conjunction with query execution action   
 * **Error count**
