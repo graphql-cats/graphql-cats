@@ -14,6 +14,12 @@ Using this test suite has following advantages:
 * It reduces amount of work a library implementor needs to do
 * Makes it much easier for existing implementations to keep up with the specification changes
 
+GraphQL implementations that have already implemented or currently working on the implementation of graphql-cats driver 
+(if you are working on the driver for graphql-cats for your project, we would appreciate if you could [create a PR](https://github.com/graphql-cats/graphql-cats/edit/master/README.md) and add it into this list):
+
+* [graphql-java](https://github.com/graphql-java/graphql-java/pull/993)
+* [Sangria](https://github.com/sangria-graphql/sangria/blob/master/src/test/scala/sangria/util/CatsSupport.scala) 
+
 ### Contribution & Open Questions
 
 At the moment this project finds itself in an infant phase. Any contributions are very welcome! Please join us in 
