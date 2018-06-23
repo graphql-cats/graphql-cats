@@ -79,7 +79,7 @@ Definitions in the `given` part of a test may override definitions defined in th
 * **Error count**
   * `error-count` - _Number_ - number of the errors in execution/validation results
 * **Error code match**
-  * `error-code` - _String_ - execution/validation results contains an error with provided code. Each error code must be described in the error mapping. See **Error Mapping** for more detail.  
+  * `error-code` - _String_ - execution/validation results contains an error with provided code. Each error code must be described in the error mapping. See **Error Mapping** section for more details.  
   * `args` - _Object_ (optional) - arguments for an error code (might be used as the placeholders in a human-readable error message representation)
   * `loc` - _Array of Objects_ | _Array of Arrays of Numbers_ (optional) - a list of error locations
       * `line` - _Number_ 
