@@ -73,11 +73,17 @@ Definitions in the `given` part of a test may override definitions defined in th
 * **Validation/Parsing is successful**
   * `passes` - _Boolean_ - verifies that validation was successful. Only applicable in conjunction with query validation/parsing action  
 * **Parsing syntax error**
-  * `syntax-error` - _Boolean_ -  query contains a syntax error. Only applicable in conjunction with query parsing action (No text matching takes place, it just verifies the fact that there is a syntax error)  
+  * `syntax-error` - _Boolean_ - query contains a syntax error. Only applicable in conjunction with query parsing action (No text matching takes place, it just verifies the fact that there is a syntax error)  
 * **Data match**
   * `data` - _Object_ - compares the `data` object with the result of a query execution. Only applicable in conjunction with query execution action   
 * **Error count**
-  * `error-count` - _Number_ - number of the errors in execution/validation results  
+  * `error-count` - _Number_ - number of the errors in execution/validation results
+* **Error code match**
+  * `error-code` - _String_ - execution/validation results contains an error with provided code. Each error code must be described in the error mapping. See **Error Mapping** for more detail.  
+  * `args` - _Object_ (optional) - arguments for an error code (might be used as the placeholders in a human-readable error message representation)
+  * `loc` - _Array of Objects_ | _Array of Arrays of Numbers_ (optional) - a list of error locations
+      * `line` - _Number_ 
+      * `column` - _Number_
 * **Error contains match**
   * `error` - _String_ - execution/validation results contain provided error message (provided error message may contain only part of the actual message)  
   * `loc` - _Array of Objects_ | _Array of Arrays of Numbers_ (optional) - a list of error locations
@@ -96,6 +102,22 @@ Definitions in the `given` part of a test may override definitions defined in th
   * `error-regex` - _String_ - execution may throw an exception during the execution (for instance, if operation name is not provided, but query contains more than one named operation). 
     This assertion verifies the message of this exception (uses provided regular expressions to match an error message). 
     Only applicable in conjunction with query execution action  
+
+#### Error Mapping
+
+Error mapping is located in `scenarios/error-mapping.yaml`. It is a [YAML](http://yaml.org) file which defines a mapping between 
+an error code and the human-readable message which can be seen in the reference implementation for this code. It also provides
+addition meta-information for every individual error code, like links to the specification and reference implementation which define 
+these errors.   
+
+Every error code has following structure in the mapping:
+
+* **message** - _String_ - human-readable message which can be seen in the reference implementation for this code. If error code takes arguments,
+  then arguments might be used in the message with as the placeholders (placeholder syntax: `${argumentName}`). For example (`fieldName` and `type` are the arguments): 
+  `Field "${fieldName}" must not have a selection since type "${type}" has no subfields.`
+* **references**
+  * **spec** - _String_ - link to a place in the specification which defines this error.
+  * **implementation** - _String_ - link to a place in the reference implementation which defines this error.
 
 ### Execution Semantics
 
