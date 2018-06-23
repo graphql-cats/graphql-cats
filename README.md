@@ -107,7 +107,7 @@ Definitions in the `given` part of a test may override definitions defined in th
 
 Error mapping is located in `scenarios/error-mapping.yaml`. It is a [YAML](http://yaml.org) file which defines a mapping between 
 an error code and the human-readable message which can be seen in the reference implementation for this code. It also provides
-addition meta-information for every individual error code, like links to the specification and reference implementation which define 
+additional meta-information for every individual error code, like links to the specification and reference implementation which define 
 these errors.   
 
 Every error code has following structure in the mapping:
