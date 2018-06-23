@@ -24,7 +24,8 @@ tests:
         - ScalarLeafs
     then:
       - error-count: 1
-      - error: 'Field "human" of type "Human" must have a selection of subfields. Did you mean "human { ... }"?'
+      - error: requiredSubselection
+        args: {fieldName: "human", type: "Human"}
         loc: {line: 2, column: 3}
   - name: interface type missing selection
     given:
@@ -37,7 +38,8 @@ tests:
         - ScalarLeafs
     then:
       - error-count: 1
-      - error: 'Field "pets" of type "[Pet]" must have a selection of subfields. Did you mean "pets { ... }"?'
+      - error: requiredSubselection
+        args: {fieldName: "pets", type: "[Pet]"}
         loc: {line: 2, column: 11}
   - name: valid scalar selection with args
     given:
@@ -61,7 +63,8 @@ tests:
         - ScalarLeafs
     then:
       - error-count: 1
-      - error: Field "barks" must not have a selection since type "Boolean" has no subfields.
+      - error: noSubselectionAllowed
+        args: {fieldName: "barks", type: "Boolean"}
         loc: {line: 2, column: 2}
   - name: scalar selection not allowed on Enum
     given:
@@ -74,7 +77,8 @@ tests:
         - ScalarLeafs
     then:
       - error-count: 1
-      - error: Field "furColor" must not have a selection since type "FurColor" has no subfields.
+      - error: noSubselectionAllowed
+        args: {fieldName: "furColor", type: "FurColor"}
         loc: {line: 2, column: 3}
   - name: scalar selection not allowed with args
     given:
@@ -87,7 +91,8 @@ tests:
         - ScalarLeafs
     then:
       - error-count: 1
-      - error: Field "doesKnowCommand" must not have a selection since type "Boolean" has no subfields.
+      - error: noSubselectionAllowed
+        args: {fieldName: "doesKnowCommand", type: "Boolean"}
         loc: {line: 2, column: 3}
   - name: Scalar selection not allowed with directives
     given:
@@ -100,7 +105,8 @@ tests:
         - ScalarLeafs
     then:
       - error-count: 1
-      - error: Field "name" must not have a selection since type "String" has no subfields.
+      - error: noSubselectionAllowed
+        args: {fieldName: "name", type: "String"}
         loc: {line: 2, column: 3}
   - name: Scalar selection not allowed with directives and args
     given:
@@ -113,5 +119,6 @@ tests:
         - ScalarLeafs
     then:
       - error-count: 1
-      - error: Field "doesKnowCommand" must not have a selection since type "Boolean" has no subfields.
+      - error: noSubselectionAllowed
+        args: {fieldName: "doesKnowCommand", type: "Boolean"}
         loc: {line: 2, column: 3}
