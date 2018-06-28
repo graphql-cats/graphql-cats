@@ -30,5 +30,6 @@ fragmentOnNonCompositeType:
 
 inlineFragmentOnNonCompositeType:
   message: Fragment cannot condition on non composite type "${type}".
-  references: http://facebook.github.io/graphql/June2018/#sec-Fragments-On-Composite-Types
+  references:
+    spec: http://facebook.github.io/graphql/June2018/#sec-Fragments-On-Composite-Types
     implementation: https://github.com/graphql/graphql-js/blob/master/src/validation/rules/FragmentsOnCompositeTypes.js
