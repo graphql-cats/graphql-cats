@@ -17,7 +17,8 @@ Using this test suite has following advantages:
 GraphQL implementations that have already implemented or currently working on the implementation of graphql-cats driver:
 
 * [graphql-java](https://github.com/graphql-java/graphql-java/pull/993)
-* [Sangria](https://github.com/sangria-graphql/sangria/blob/master/src/test/scala/sangria/util/CatsSupport.scala) 
+* [Sangria](https://github.com/sangria-graphql/sangria/blob/master/src/test/scala/sangria/util/CatsSupport.scala)
+* [Hot Chocolate](https://github.com/ChilliCream/hotchocolate/pull/329)
 
 If you are working on the driver for graphql-cats for your project, we would appreciate if you could 
 [create a PR](https://github.com/graphql-cats/graphql-cats/edit/master/README.md) and add it into this list.
