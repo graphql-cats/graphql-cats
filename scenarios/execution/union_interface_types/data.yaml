@@ -1,0 +1,16 @@
+bob:
+  type: Person
+  name: Bob
+  pets:
+    - type: Cat
+      name: Garfield
+      meows: false
+    - type: Dog
+      name: Odie
+      barks: true
+  friends:
+    - type: Person
+      name: Liz
+    - type: Dog
+      name: Odie
+      barks: true

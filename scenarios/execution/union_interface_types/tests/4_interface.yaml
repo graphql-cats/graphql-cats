@@ -1,0 +1,27 @@
+name: executes using interface types
+given:
+  query: |
+    {
+      __typename
+      name
+      friends {
+        __typename
+        name
+        barks
+        meows
+      }
+    }
+when:
+  execute:
+    validate-query: false
+    test-value: bob
+then:
+  data:
+    __typename: "Person"
+    name: "Bob"
+    friends:
+      - __typename: "Person"
+        name: "Liz"
+      - __typename: "Dog"
+        name: "Odie"
+        barks: true

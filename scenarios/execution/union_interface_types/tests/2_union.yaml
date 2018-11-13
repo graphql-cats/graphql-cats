@@ -1,0 +1,29 @@
+name: executes using union types
+given:
+  query: |
+    {
+      __typename
+      name
+      pets {
+        __typename
+        name
+        barks
+        meows
+      }
+    }
+when:
+  execute:
+    validate-query: false
+    test-value: bob
+then:
+  data:
+    __typename: "Person"
+    name: "Bob"
+    pets:
+      - __typename: "Cat"
+        name: "Garfield"
+        meows: false
+      - __typename: "Dog"
+        name: "Odie"
+        barks: true
+        
